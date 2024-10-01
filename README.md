@@ -40,7 +40,7 @@ GIF created with ScreenToGif
 [Kap](https://getkap.co/) for macOS
 [ScreenToGif](https://www.screentogif.com/) for Windows
 [peek](https://github.com/phw/peek) for Linux. -->
-
+![hippo](https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHN3OTY1aHF4OWV5OGV0cnczZjBobzZrZmdobjRlazV1NmVrMmM0MSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/pmQvOligmaquM0PK0M/giphy.gif)
 ## Notes
 
 Describe any challenges encountered while building the app.
