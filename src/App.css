@@ -1,0 +1,168 @@
+body{
+  background-color:rgb(178, 62, 97);
+  margin:0;
+  padding:0;
+  height:100vh;
+  display: flex; /* Center content using flex on the body */
+  flex-direction: column;
+  justify-content: center; /* Horizontal centering */
+  align-items: center; /* Vertical centering */
+  color:white;
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+}
+.PageContainer{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.TitleContainer{
+  text-align: center;
+  font-size:30px;
+}
+.buttonEasy{
+  background-color: #b0d8a4;
+  font-weight:bold;
+  color:black;
+  cursor: pointer;
+  transition: transform 1s ease, background-color 0.2s ease;
+}
+.buttonEasy:hover{
+  transform:scale(1.3);
+  transition: transform 1s ease;
+}
+.buttonMedium{
+  background-color: #fee191;
+  font-weight:bold;
+  color:black;
+  transition: transform 1s ease, background-color 0.2s ease;
+  cursor: pointer;
+}
+.buttonMedium:hover{
+  transform:scale(1.3);
+  transition: transform 1s ease;
+}
+.buttonHard{
+  background-color: #e84258;
+  font-weight:bold;
+  color:black;
+  transition: transform 1s ease, background-color 0.2s ease;
+  cursor: pointer;
+}
+.buttonHard:hover{
+  transform:scale(1.3);
+  transition: transform 1s ease;
+}
+.difficultyButtons{
+  display:flex;
+  justify-content: center;
+  gap:30px;
+  padding: 10px;
+}
+.difficultyButtons button{
+  border-radius: 20px;
+  border:none;
+}
+.TitleContainer button{
+  padding:10px 20px;
+}
+.FlashCardContainer{
+  width: 1200px;
+  height: 600px;
+  background-color: white;
+  border-radius: 50px;
+  color: black;
+  perspective: 1000px; /* Perspective for the 3D effect */
+  position: relative; /* Required for absolutely positioned children */
+  transition: transform 1s; 
+  overflow:hidden;
+}
+.FlashCardContainer.flip {
+  transform: rotateY(180deg); /* Flip the whole container */
+}
+.FlashCardContent {
+  position: absolute;
+  cursor: pointer;
+  transition: transform 0.6s; /* Smooth transition for flipping */
+  width: 100%;
+  height: 100%;
+  font-size: 30px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;  /* Center vertically */
+  justify-content: center;  /* Center horizontally */
+  color:black;
+}
+.FlashCardContent:hover{
+  transform:scale(1.3);
+
+}
+.FlashCardContent.front {
+  transform: rotateY(0deg);
+  z-index:2;
+}
+
+.FlashCardContent.back {
+  transform: rotateY(180deg);
+  background-color: white; /* Add a white background to ensure visibility */
+  color: black; /* Ensure back text is black */
+  z-index:1;
+  border-radius: 50px;
+}
+
+.hidden {
+  display: none; /* Ensure hidden content is not visible at all */
+}
+
+.buttons{
+  display:flex;
+  justify-content: center;
+  padding-top:20px;
+  margin:20px;
+}
+.buttonLeft:hover{
+  transform:scale(1.3);
+  transition: transform 1s ease;
+  background-color: black;
+  color:white;
+}
+.buttonRight:hover{
+  transform:scale(1.3);
+  transition: transform 1s ease;
+  background-color: black;
+  color:white;
+}
+.buttonLeft{
+  margin:0 30px;
+  padding:10px 15px;
+  cursor: pointer;
+  background-color:white;
+  color:black;
+  gap:20px;
+  border-radius: 20px;
+  border:none;
+  cursor: pointer;
+  transition: transform 1s ease, background-color 0.2s ease;
+}
+.buttonRight{
+  margin:0 10px;
+  padding:10px 15px;
+  cursor: pointer;
+  background-color:white;
+  color:black;
+  gap:20px;
+  border-radius: 20px;
+  border:none;
+  cursor: pointer;
+  transition: transform 1s ease, background-color 0.2s ease;
+}
+.buttonLeft:active{
+  background-color: black;
+  color:white;
+  transition:scale(1.5)
+}
+.buttonRight:active{
+  background-color: black;
+  color:white;
+  transform:scale(1.5);
+}
