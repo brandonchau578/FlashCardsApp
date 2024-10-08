@@ -30,18 +30,15 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+![Alt Text](https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExMzZzcm8wdjUybHJhYjJoazd6bWl5MDhqcDQzbTd0bWJxdThpcnloNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/zQq7Ln0ASM3xYnwmmG/giphy.gif)
 
 <!-- Replace this with whatever GIF tool you used! -->
 GIF created with ...  
-<!-- Recommended tools:
-[Kap](https://getkap.co/) for macOS
 [ScreenToGif](https://www.screentogif.com/) for Windows
-[peek](https://github.com/phw/peek) for Linux. -->
 
 ## Notes
+It took a while to understand useStates but after reading the documentation over and over again it finally clicked.
 
-Describe any challenges encountered while building the app.
 
 ## License
 
