@@ -39,10 +39,43 @@ const App = () => {
 
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [showingQuestion, setShowingQuestion] = useState(true);
+  const [currentGuess, setCurrentGuess] = useState("");
+  const [feedback, setFeedback] = useState("");
+  const [showFeedback, setShowFeedback] = useState(false);
   const [currentDifficulty, setCurrentDifficulty] = useState('easy');
+  const [currentStreak, setCurrentStreak] = useState(0);
+  const [longestStreak, setLongestStreak] = useState(0);
+  const [masteredCards, setMasteredCards] = useState([]);
+  const [shuffledCards, setShuffledCards] = useState([]);
 
-  const [cardColor, setCardColor] = useState('green');
-  const colors = ['black', 'red', 'green', 'blue', 'purple', 'orange'];
+  const isGuessClose = (correctAnswer, userGuess) => {
+    return correctAnswer.toLowerCase().includes(userGuess.toLowerCase());
+  };
+
+  const shuffleCards = () => {
+    const shuffled = [...getCurrentCardPairs()].sort(() => Math.random() - 0.5);
+    setShuffledCards(shuffled);
+    setCurrentCardIndex(0);
+    setShowingQuestion(true);
+  };
+
+  const handleSubmitGuess = () => {
+    const currentAnswer = getCurrentCards()[currentCardIndex].answer.toLowerCase();
+    const userGuess = currentGuess.toLowerCase();
+
+    if (isGuessClose(currentAnswer, userGuess)) {
+      setFeedback("Correct!");
+      setCurrentStreak(prev => prev + 1);
+      if (currentStreak + 1 > longestStreak) {
+        setLongestStreak(currentStreak + 1);
+      }
+    } else {
+      setFeedback("Incorrect!");
+      setCurrentStreak(0);
+    }
+    setShowFeedback(true);
+    setShowingQuestion(false);
+  };
 
   const getCurrentCardPairs = () => {
     switch (currentDifficulty) {
@@ -57,32 +90,46 @@ const App = () => {
     }
   };
 
-  const currentCards = getCurrentCardPairs();
+  const getCurrentCards = () => shuffledCards.length > 0 ? shuffledCards : getCurrentCardPairs();
 
   const flipCard = () => {
     setShowingQuestion(prevState => !prevState);
-    setCardColor(colors[Math.floor(Math.random() * colors.length)]); 
   };
 
   const showNextCard = () => {
-    const nextIndex = (currentCardIndex + 1) % currentCards.length;
+    const nextIndex = (currentCardIndex + 1) % getCurrentCards().length;
     setCurrentCardIndex(nextIndex);
     setShowingQuestion(true);
-    setCardColor(colors[Math.floor(Math.random() * colors.length)]);
+    setFeedback(""); 
+    setShowFeedback(false);
   };
 
   const showPreviousCard = () => {
-    const previousIndex = currentCardIndex > 0 ? currentCardIndex - 1 : currentCards.length - 1;
+    const previousIndex = currentCardIndex > 0 ? currentCardIndex - 1 : getCurrentCards().length - 1;
     setCurrentCardIndex(previousIndex);
     setShowingQuestion(true);
-    setCardColor(colors[Math.floor(Math.random() * colors.length)]);
+    setFeedback("");
+    setShowFeedback(false); 
+  };
+
+  const markAsMastered = () => {
+    const currentCard = getCurrentCards()[currentCardIndex];
+    setMasteredCards([...masteredCards, currentCard]);
+
+    const remainingCards = getCurrentCards().filter((_, index) => index !== currentCardIndex);
+    setShuffledCards(remainingCards);
+    if (remainingCards.length > 0) {
+      showNextCard();
+    } else {
+      setCurrentCardIndex(0);
+    }
   };
 
   const handleDifficultyChange = (difficulty) => {
     setCurrentDifficulty(difficulty);
+    setShuffledCards([]);
     setCurrentCardIndex(0);
     setShowingQuestion(true);
-    setCardColor(colors[Math.floor(Math.random() * colors.length)]);
   };
 
   return (
@@ -94,27 +141,46 @@ const App = () => {
           <button className="buttonEasy" onClick={() => handleDifficultyChange('easy')}>Easy</button>
           <button className="buttonMedium" onClick={() => handleDifficultyChange('medium')}>Medium</button>
           <button className="buttonHard" onClick={() => handleDifficultyChange('hard')}>Hard</button>
+          <button className="buttonShuffle"onClick={shuffleCards}>Shuffle</button>
         </div>
-        <h3> Number of Cards: {currentCards.length}</h3>
+        <p>Current Streak: {currentStreak}</p>
+        <p>Longest Streak: {longestStreak}</p>
+        <p>Mastered Cards: {masteredCards.length}</p>
+        <h3> Number of Cards: {getCurrentCards().length}</h3>
       </div>
-      <div className={`FlashCardContainer ${!showingQuestion ? 'flip' : ''}`} onClick={flipCard}>
-        <div className={`FlashCardContent front ${showingQuestion ? '' : 'hidden'}`} style={{ backgroundColor: currentDifficulty === 'easy' ? '#b0d8a4' : 
-        currentDifficulty === 'medium' ? '#fee191' :
-        '#e84258',
-      }}>
-          <p>{currentCards[currentCardIndex].question}</p>
-        </div>
-        <div className={`FlashCardContent back ${showingQuestion ? 'hidden' : ''}`} style={{ backgroundColor: currentDifficulty === 'easy' ? '#b0d8a4' : 
-        currentDifficulty === 'medium' ? '#fee191' :
-        '#e84258',
-      }}>
-          <p>{currentCards[currentCardIndex].answer}</p>
-        </div>
-      </div>
-      <div className="buttons">
-        <div className="buttonLeft" onClick={showPreviousCard}><HiOutlineArrowSmLeft /></div>
-        <div className="buttonRight" onClick={showNextCard}><HiOutlineArrowSmRight /></div>
-      </div>
+
+      {getCurrentCards().length > 0 ? (
+        <>
+          <div className={`FlashCardContainer ${!showingQuestion ? 'flip' : ''}`} onClick={flipCard}>
+            <div className={`FlashCardContent front ${showingQuestion ? '' : 'hidden'}`} style={{ backgroundColor: currentDifficulty === 'easy' ? '#b0d8a4' : currentDifficulty === 'medium' ? '#fee191' : '#e84258' }}>
+              <p>{getCurrentCards()[currentCardIndex].question}</p>
+            </div>
+            <div className={`FlashCardContent back ${showingQuestion ? 'hidden' : ''}`} style={{ backgroundColor: currentDifficulty === 'easy' ? '#b0d8a4' : currentDifficulty === 'medium' ? '#fee191' : '#e84258' }}>
+              <p>{getCurrentCards()[currentCardIndex].answer}</p>
+            </div>
+          </div>
+
+          <div className="inputSection">
+            <input 
+              type="text" 
+              value={currentGuess} 
+              onChange={(e) => setCurrentGuess(e.target.value)} 
+              placeholder="Enter your guess" 
+              onKeyDown={(e) => e.key === 'Enter' && handleSubmitGuess()} 
+            />
+            <button onClick={handleSubmitGuess}>Submit</button>
+            <button onClick={markAsMastered}>Mark as Mastered</button>
+          </div>
+
+          {showFeedback && <p>{feedback}</p>}
+          <div className="buttons">
+            <div className="buttonLeft" onClick={showPreviousCard}><HiOutlineArrowSmLeft /></div>
+            <div className="buttonRight" onClick={showNextCard}><HiOutlineArrowSmRight /></div>
+          </div>
+        </>
+      ) : (
+        <p>Congratulations! You've mastered all cards!</p>
+      )}
     </div>
   );
 };
